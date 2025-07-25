@@ -1,0 +1,275 @@
+:root {
+  --black: #FF000000;
+  --white: #FFFFFFFF;
+  --charcoal: #1E3B4C;
+  --cerulean: #156F89;
+  --night: #101012;
+  --richblack: #11151A;
+  --paynegray: #20637D;
+  --white_20: #33FFFFFF;
+  --light-surface: #1f1f26;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--night);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-container {
+  display: grid;
+  grid-template-rows: 60px 1fr 90px;
+  grid-template-columns: 1fr;
+  height: 100vh;
+}
+
+
+.search-bar-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--night);
+  padding: 0 20px;
+  height: 60px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--cerulean);
+}
+
+#searchInput {
+  width: 400px;
+  max-width: 50%;
+  padding: 10px 16px;
+  font-size: 15px;
+  background-color: var(--richblack);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  outline: none;
+}
+
+#searchInput::placeholder {
+  color: var(--cerulean);
+}
+
+.main-layout {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  padding: 20px 20px 0 20px;
+  gap: 20px;
+}
+
+.sidebar {
+  width: 400px;
+  background-color: var(--richblack);
+  padding: 20px;
+  overflow-y: auto;
+  border-radius: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  color: var(--cerulean);
+  margin-bottom: 20px;
+}
+
+#likedSongsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#likedSongsList li {
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background-color: var(--charcoal);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#likedSongsList li:hover {
+  background-color: var(--paynegray);
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.dashboard {
+  background-color: var(--richblack);
+  border-radius: 16px;
+  padding: 20px;
+  flex: 1;
+}
+
+.dashboard h3 {
+  font-size: 22px;
+  color: var(--cerulean);
+  margin-bottom: 15px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.stat {
+  background-color: var(--charcoal);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.song-card {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--charcoal);
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.song-card:hover {
+  background-color: var(--paynegray);
+}
+
+.song-card img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.song-info {
+  flex: 1;
+}
+
+.song-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.song-subtitle {
+  font-size: 14px;
+  color: var(--white_20);
+}
+
+.song-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.song-actions button {
+  background-color: transparent;
+  border: 1px solid var(--white_20);
+  color: var(--white);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.song-actions button:hover {
+  background-color: var(--cerulean);
+  border-color: var(--cerulean);
+}
+
+.player-bar {
+  background-color: var(--night);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  height: 90px;
+}
+
+.now-playing {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 300px;
+}
+
+.now-playing img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.now-playing div {
+  overflow: hidden;
+}
+
+#currentTitle {
+  font-weight: 600;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#currentSubtitle {
+  font-size: 14px;
+  color: var(--white_20);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.controls button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.controls button:hover {
+  color: var(--cerulean);
+}
+
+#seekBar {
+  width: 250px;
+}

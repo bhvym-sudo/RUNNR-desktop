@@ -1,11 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>RUNNR Desktop</title>
+  <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-  <h1>Welcome to RUNNR Desktop</h1>
+  <div class="app-container">
+
+
+    <div class="top-bar">
+      <div class="logo">🎵 RUNNR</div>
+      <div class="search-bar-container">
+        <input type="text" id="searchInput" placeholder="Search your jam..." />
+      </div>
+      
+    </div>
+
+
+    <div class="main-layout">
+
+
+      <aside class="sidebar">
+        <h2>Liked Songs</h2>
+        <ul id="likedSongsList"></ul>
+      </aside>
+
+
+      <main class="main-content">
+        <section class="dashboard">
+          <h3>What's New</h3>
+          <div class="stats">
+            <div class="stat">🎧 Most Played: <span id="mostPlayed">---</span></div>
+            <div class="stat">⏱️ Time Listened: <span id="timeListened">0 mins</span></div>
+            <div class="stat">💖 Liked Songs: <span id="likedCount">0</span></div>
+            <div class="stat">▶ Last Played: <span id="lastPlayed">---</span></div>
+          </div>
+        </section>
+
+        <section id="searchResults" class="results-container"></section>
+      </main>
+    </div>
+
+
+    <footer class="player-bar">
+      <div class="now-playing">
+        <img id="currentImg" src="" alt="Album Art" />
+        <div>
+          <div id="currentTitle">No song playing</div>
+          <div id="currentSubtitle">---</div>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="prevBtn">⏮</button>
+        <button id="playPauseBtn">▶</button>
+        <button id="nextBtn">⏭</button>
+        <button id="repeatBtn">🔁</button>
+      </div>
+      <input type="range" id="seekBar" value="0" min="0" max="100">
+    </footer>
+
+  </div>
+
   <script src="renderer.js"></script>
 </body>
 </html>
