@@ -11,7 +11,7 @@
       <div class="logo">🎵 RUNNR</div>
       <div class="search-bar-container">
         <button id="homeBtn" class="home-btn">🏠</button>
-        <input type="text" id="searchInput" placeholder="Search your jam..." />
+        <input type="text" id="searchInput" placeholder="Run your jam." />
       </div>
     </div>
 
@@ -42,14 +42,26 @@
           <div id="currentSubtitle">---</div>
         </div>
       </div>
-      <div class="controls">
-        <button id="prevBtn">⏮</button>
-        <button id="playPauseBtn">▶</button>
-        <button id="nextBtn">⏭</button>
-        <button id="repeatBtn">🔁</button>
+
+      <div class="center-controls">
+        <div class="controls">
+          <button id="prevBtn">⏮</button>
+          <button id="playPauseBtn">▶</button>
+          <button id="nextBtn">⏭</button>
+          <button id="repeatBtn">🔁</button>
+        </div>
+        <div class="seek-container">
+          <span id="currentTime">0:00</span>
+          <input type="range" id="seekBar" value="0" min="0" max="100">
+          <span id="totalDuration">0:00</span>
+        </div>
       </div>
-      <input type="range" id="seekBar" value="0" min="0" max="100">
+
+      <div class="placeholder-right"></div>
     </footer>
+
+
+
 
     <script src="renderer.js"></script>
   </div>
