@@ -7,28 +7,22 @@
 </head>
 <body>
   <div class="app-container">
-
-
     <div class="top-bar">
       <div class="logo">🎵 RUNNR</div>
       <div class="search-bar-container">
+        <button id="homeBtn" class="home-btn">🏠</button>
         <input type="text" id="searchInput" placeholder="Search your jam..." />
       </div>
-      
     </div>
 
-
     <div class="main-layout">
-
-
       <aside class="sidebar">
         <h2>Liked Songs</h2>
         <ul id="likedSongsList"></ul>
       </aside>
 
-
-      <main class="main-content">
-        <section class="dashboard">
+      <main class="main-content" id="mainContent">
+        <section class="dashboard" id="dashboard">
           <h3>What's New</h3>
           <div class="stats">
             <div class="stat">🎧 Most Played: <span id="mostPlayed">---</span></div>
@@ -37,11 +31,8 @@
             <div class="stat">▶ Last Played: <span id="lastPlayed">---</span></div>
           </div>
         </section>
-
-        <section id="searchResults" class="results-container"></section>
       </main>
     </div>
-
 
     <footer class="player-bar">
       <div class="now-playing">
@@ -60,8 +51,7 @@
       <input type="range" id="seekBar" value="0" min="0" max="100">
     </footer>
 
+    <script src="renderer.js"></script>
   </div>
-
-  <script src="renderer.js"></script>
 </body>
 </html>
