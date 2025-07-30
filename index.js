@@ -8,11 +8,13 @@ function createWindow () {
       nodeIntegration: true,
       contextIsolation: false,
       preload: path.join(__dirname, 'preload.js'),
-      icon: path.join(__dirname, 'assets/icon.png')
+      icon: path.join(__dirname, 'assets', 'icon.png'),
     }
   });
   win.maximize();
+  win.setMenuBarVisibility(false);
   win.show();
+  win.setIcon(path.join(__dirname, 'assets', 'icon.png'));
 
   win.loadFile('index.html');
 

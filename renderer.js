@@ -14,6 +14,7 @@ let audio = new Audio();
 let isPlaying = false;
 let currentSong = null;
 let seekUpdateInterval;
+let currentPlayingCard = null;
 
 searchInput.addEventListener('input', async () => {
   const query = searchInput.value.trim();
@@ -62,7 +63,12 @@ function renderSearchResults(songs) {
     const card = document.createElement('div');
     card.className = 'song-card';
     card.innerHTML = `
-      <img src="${image}" alt="Album Art" />
+      <div class="song-image-container">
+        <img src="${image}" alt="Album Art" />
+        <div class="play-overlay">
+          <button class="play-button"></button>
+        </div>
+      </div>
       <div class="song-info">
         <div class="song-title">${title}</div>
         <div class="song-subtitle">${subtitle}</div>
@@ -70,16 +76,35 @@ function renderSearchResults(songs) {
       <div style="font-size: 12px; color: #ccc;">${formatDuration(duration)}</div>
     `;
 
+    const playButton = card.querySelector('.play-button');
+    playButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSong(encryptedUrl, { title, subtitle, image, duration }, card);
+    });
+
     card.addEventListener('click', () => {
-      playSong(encryptedUrl, { title, subtitle, image, duration });
+      playSong(encryptedUrl, { title, subtitle, image, duration }, card);
     });
 
     resultsContainer.appendChild(card);
   });
 }
 
-async function playSong(encryptedUrl, meta) {
+async function playSong(encryptedUrl, meta, cardElement) {
   try {
+    if (currentSong && currentSong.title === meta.title) {
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        updateAllPlayButtons();
+      } else {
+        audio.play();
+        isPlaying = true;
+        updateAllPlayButtons();
+      }
+      return;
+    }
+
     const response = await fetch(`https://www.jiosaavn.com/api.php?__call=song.generateAuthToken&url=${encodeURIComponent(encryptedUrl)}&bitrate=320&api_version=4&_format=json&ctx=web6dot0&_marker=0`);
     const text = await response.text();
     const cleaned = text.replace(/^\)\]\}',?/, '');
@@ -89,10 +114,19 @@ async function playSong(encryptedUrl, meta) {
       streamUrl = streamUrl.split('?')[0].replace('ac.cf.saavncdn.com', 'aac.saavncdn.com');
     }
 
+    if (currentPlayingCard) {
+      currentPlayingCard.classList.remove('playing');
+    }
+
     audio.src = streamUrl;
     audio.play();
     isPlaying = true;
-    playPauseBtn.textContent = '⏸';
+    currentSong = meta;
+    currentPlayingCard = cardElement;
+
+    if (cardElement) {
+      cardElement.classList.add('playing');
+    }
 
     currentImg.src = meta.image;
     currentTitle.textContent = meta.title;
@@ -102,10 +136,27 @@ async function playSong(encryptedUrl, meta) {
     currentTimeDisplay.textContent = '0:00';
     totalDurationDisplay.textContent = formatDuration(meta.duration);
 
+    updateAllPlayButtons();
+
     if (seekUpdateInterval) clearInterval(seekUpdateInterval);
     seekUpdateInterval = setInterval(updateSeekBar, 500);
   } catch (err) {
     console.error('Failed to stream:', err);
+  }
+}
+
+function updateAllPlayButtons() {
+  const allPlayButtons = document.querySelectorAll('.play-button');
+  allPlayButtons.forEach(btn => btn.classList.remove('playing'));
+  
+  playPauseBtn.classList.remove('playing');
+  
+  if (isPlaying) {
+    playPauseBtn.classList.add('playing');
+    if (currentPlayingCard) {
+      const playButton = currentPlayingCard.querySelector('.play-button');
+      if (playButton) playButton.classList.add('playing');
+    }
   }
 }
 
@@ -114,12 +165,11 @@ playPauseBtn.addEventListener('click', () => {
   if (audio.paused) {
     audio.play();
     isPlaying = true;
-    playPauseBtn.textContent = '⏸';
   } else {
     audio.pause();
     isPlaying = false;
-    playPauseBtn.textContent = '▶';
   }
+  updateAllPlayButtons();
 });
 
 seekBar.addEventListener('input', () => {
