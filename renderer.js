@@ -16,6 +16,13 @@ let currentSong = null;
 let seekUpdateInterval;
 let currentPlayingCard = null;
 
+const defaultHeaders = {
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138 Safari/537.36",
+  "Referer": "https://www.jiosaavn.com/",
+  "Origin": "https://www.jiosaavn.com",
+  "Accept": "application/json"
+};
+
 searchInput.addEventListener('input', async () => {
   const query = searchInput.value.trim();
   if (query.length === 0) {
@@ -26,7 +33,10 @@ searchInput.addEventListener('input', async () => {
   }
 
   try {
-    const response = await fetch(`https://www.jiosaavn.com/api.php?__call=search.getResults&p=1&q=${encodeURIComponent(query)}&_format=json&_marker=0&api_version=4&ctx=web6dot0&n=20`);
+    const response = await fetch(
+      `https://www.jiosaavn.com/api.php?__call=search.getResults&p=1&q=${encodeURIComponent(query)}&_format=json&_marker=0&api_version=4&ctx=web6dot0&n=20`,
+      { headers: defaultHeaders }
+    );
     const text = await response.text();
     const cleaned = text.replace(/^\)\]\}',?/, '');
     const data = JSON.parse(cleaned);
@@ -105,7 +115,10 @@ async function playSong(encryptedUrl, meta, cardElement) {
       return;
     }
 
-    const response = await fetch(`https://www.jiosaavn.com/api.php?__call=song.generateAuthToken&url=${encodeURIComponent(encryptedUrl)}&bitrate=320&api_version=4&_format=json&ctx=web6dot0&_marker=0`);
+    const response = await fetch(
+      `https://www.jiosaavn.com/api.php?__call=song.generateAuthToken&url=${encodeURIComponent(encryptedUrl)}&bitrate=320&api_version=4&_format=json&ctx=web6dot0&_marker=0`,
+      { headers: defaultHeaders }
+    );
     const text = await response.text();
     const cleaned = text.replace(/^\)\]\}',?/, '');
     const data = JSON.parse(cleaned);
@@ -118,7 +131,10 @@ async function playSong(encryptedUrl, meta, cardElement) {
       currentPlayingCard.classList.remove('playing');
     }
 
-    audio.src = streamUrl;
+    const mediaRes = await fetch(streamUrl, { headers: defaultHeaders });
+    const mediaBlob = await mediaRes.blob();
+    audio.src = URL.createObjectURL(mediaBlob);
+
     audio.play();
     isPlaying = true;
     currentSong = meta;

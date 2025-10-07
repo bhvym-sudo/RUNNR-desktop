@@ -18,6 +18,15 @@ function createWindow () {
 
   win.loadFile('index.html');
 
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    if (details.url.includes("saavncdn.com")) {
+      details.requestHeaders['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138 Safari/537.36";
+      details.requestHeaders['Referer'] = "https://www.jiosaavn.com/";
+      details.requestHeaders['Origin'] = "https://www.jiosaavn.com";
+    }
+    callback({ requestHeaders: details.requestHeaders });
+  });
+
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
