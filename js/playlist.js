@@ -35,12 +35,26 @@ function renderPlaylists() {
   playlists.forEach((playlist, index) => {
     const li = document.createElement('li');
     li.innerHTML = `
-      <span class="playlist-name">${playlist.name}</span>
-      <span class="playlist-count">${playlist.songs.length} songs</span>
+      <div class="playlist-info-container">
+        <span class="playlist-name">${playlist.name}</span>
+        <span class="playlist-count">${playlist.songs.length} songs</span>
+      </div>
+      <button class="playlist-menu-btn">⋮</button>
     `;
     
-    li.addEventListener('click', () => {
+    // Make only the playlist info clickable for viewing
+    const infoContainer = li.querySelector('.playlist-info-container');
+    infoContainer.addEventListener('click', () => {
       showPlaylistSongs(playlist);
+    });
+    
+    // Add delete functionality to the menu button
+    const menuBtn = li.querySelector('.playlist-menu-btn');
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent playlist from opening
+      if (confirm(`Delete playlist "${playlist.name}"?`)) {
+        deletePlaylist(playlist.id);
+      }
     });
     
     playlistsContainer.appendChild(li);
@@ -73,14 +87,49 @@ function addSongToPlaylist(playlistId, song) {
   return true;
 }
 
+function removeSongFromPlaylist(playlistId, song) {
+  const playlist = playlists.find(p => p.id === playlistId);
+  if (!playlist) return false;
+  
+  const songIndex = playlist.songs.findIndex(s => s.title === song.title);
+  if (songIndex === -1) return false;
+  
+  playlist.songs.splice(songIndex, 1);
+  savePlaylists();
+  renderPlaylists();
+  
+  // Refresh the playlist view to reflect the changes
+  const currentPlaylistView = document.getElementById('playlistView');
+  if (currentPlaylistView && currentPlaylistView.dataset.playlistId === playlistId) {
+    showPlaylistSongs(playlist);
+  }
+  
+  return true;
+}
+
+function deletePlaylist(playlistId) {
+  const index = playlists.findIndex(p => p.id === playlistId);
+  if (index === -1) return false;
+  
+  playlists.splice(index, 1);
+  savePlaylists();
+  renderPlaylists();
+  
+  const playlistView = document.getElementById('playlistView');
+  if (playlistView) {
+    playlistView.remove();
+    dashboard.style.display = 'block';
+  }
+  
+  return true;
+}
+
 // Format duration helper function
 function formatDuration(seconds) {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
-
-// Function to create a song card for display
 function createSongCard(song) {
   const { title, subtitle, image, duration, encryptedUrl } = song;
   
@@ -123,12 +172,18 @@ function createSongCard(song) {
 function showPlaylistSongs(playlist) {
   dashboard.style.display = 'none';
   
+  // Remove search results if present
   const oldResults = document.getElementById('searchResults');
   if (oldResults) oldResults.remove();
+  
+  // Remove any existing playlist view to prevent stacking
+  const oldPlaylistView = document.getElementById('playlistView');
+  if (oldPlaylistView) oldPlaylistView.remove();
   
   const playlistView = document.createElement('section');
   playlistView.id = 'playlistView';
   playlistView.className = 'results-container';
+  playlistView.dataset.playlistId = playlist.id; // Store playlist ID for reference
   
   const header = document.createElement('div');
   header.className = 'playlist-header';
@@ -147,6 +202,14 @@ function showPlaylistSongs(playlist) {
   } else {
     playlist.songs.forEach(song => {
       const card = createSongCard(song);
+      
+      // Update the action button to show remove option
+      const actionsButton = card.querySelector('.song-actions-btn');
+      actionsButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showAddToPlaylistMenu(song, actionsButton, playlist.id);
+      });
+      
       playlistView.appendChild(card);
     });
   }
@@ -154,7 +217,7 @@ function showPlaylistSongs(playlist) {
   mainContent.appendChild(playlistView);
 }
 
-function showAddToPlaylistMenu(song, element) {
+function showAddToPlaylistMenu(song, element, currentPlaylistId = null) {
   const existingMenu = document.querySelector('.playlist-menu');
   if (existingMenu) existingMenu.remove();
   
@@ -163,8 +226,37 @@ function showAddToPlaylistMenu(song, element) {
   
   const header = document.createElement('div');
   header.className = 'playlist-menu-header';
-  header.textContent = 'Add to playlist';
-  menu.appendChild(header);
+  
+  // If we're in a playlist view and the song is from that playlist
+  if (currentPlaylistId) {
+    header.textContent = 'Song options';
+    
+    // Add remove from playlist option
+    const removeItem = document.createElement('div');
+    removeItem.className = 'playlist-menu-item remove-option';
+    removeItem.textContent = 'Remove from this playlist';
+    removeItem.addEventListener('click', (e) => {
+      e.stopPropagation();
+      removeSongFromPlaylist(currentPlaylistId, song);
+      menu.remove();
+    });
+    menu.appendChild(header);
+    menu.appendChild(removeItem);
+    
+    // Add a separator
+    const separator = document.createElement('div');
+    separator.className = 'playlist-menu-separator';
+    menu.appendChild(separator);
+    
+    // Add header for other playlists
+    const otherHeader = document.createElement('div');
+    otherHeader.className = 'playlist-menu-subheader';
+    otherHeader.textContent = 'Add to other playlist';
+    menu.appendChild(otherHeader);
+  } else {
+    header.textContent = 'Add to playlist';
+    menu.appendChild(header);
+  }
   
   if (playlists.length === 0) {
     const emptyMessage = document.createElement('div');
@@ -173,6 +265,11 @@ function showAddToPlaylistMenu(song, element) {
     menu.appendChild(emptyMessage);
   } else {
     playlists.forEach(playlist => {
+      // Skip the current playlist if we're in a playlist view
+      if (currentPlaylistId && playlist.id === currentPlaylistId) {
+        return;
+      }
+      
       const item = document.createElement('div');
       item.className = 'playlist-menu-item';
       item.textContent = playlist.name;
@@ -234,6 +331,31 @@ function showAddToPlaylistMenu(song, element) {
   });
 }
 
+
+function removeSongFromPlaylist(playlistId, song) {
+  const playlist = playlists.find(p => p.id === playlistId);
+  if (!playlist) return false;
+  
+  // Find the song index by matching title and encryptedUrl
+  const songIndex = playlist.songs.findIndex(s => 
+    s.title === song.title && s.encryptedUrl === song.encryptedUrl
+  );
+  
+  if (songIndex === -1) return false;
+  
+  // Remove the song
+  playlist.songs.splice(songIndex, 1);
+  savePlaylists();
+  renderPlaylists();
+  
+  // Refresh the playlist view if it's currently displayed
+  const playlistView = document.getElementById('playlistView');
+  if (playlistView && playlistView.dataset.playlistId === playlistId) {
+    showPlaylistSongs(playlist);
+  }
+  
+  return true;
+}
 
 // Create a custom modal dialog function
 function showCreatePlaylistDialog(callback) {

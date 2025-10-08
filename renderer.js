@@ -50,6 +50,10 @@ searchInput.addEventListener('input', async () => {
 
 function renderSearchResults(songs) {
   dashboard.style.display = 'none';
+  
+  // Remove playlist view if it exists
+  const playlistView = document.getElementById('playlistView');
+  if (playlistView) playlistView.remove();
 
   let resultsContainer = document.getElementById('searchResults');
   if (resultsContainer) {
@@ -108,6 +112,7 @@ function renderSearchResults(songs) {
   });
 }
 
+// Export the playSong function for use in other modules
 async function playSong(encryptedUrl, meta, cardElement) {
   try {
     if (currentSong && currentSong.title === meta.title) {
@@ -169,6 +174,7 @@ async function playSong(encryptedUrl, meta, cardElement) {
   }
 }
 
+
 function updateAllPlayButtons() {
   const allPlayButtons = document.querySelectorAll('.play-button');
   allPlayButtons.forEach(btn => btn.classList.remove('playing'));
@@ -183,6 +189,12 @@ function updateAllPlayButtons() {
     }
   }
 }
+
+// Export functions for use in other modules
+module.exports = {
+  playSong,
+  formatDuration
+};
 
 playPauseBtn.addEventListener('click', () => {
   if (!audio.src) return;
