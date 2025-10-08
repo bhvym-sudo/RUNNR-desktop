@@ -1,5 +1,9 @@
-const { app, BrowserWindow, session } = require('electron');
+const { app, BrowserWindow, session, ipcMain } = require('electron');
 const path = require('path');
+const fs = require('fs');
+
+// Path for the playlists JSON file
+const playlistsFilePath = path.join(app.getPath('userData'), 'playlists.json');
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -36,5 +40,29 @@ function createWindow () {
     });
   });
 }
+
+// IPC handlers for playlist operations
+ipcMain.handle('load-playlists', async () => {
+  try {
+    if (fs.existsSync(playlistsFilePath)) {
+      const data = fs.readFileSync(playlistsFilePath, 'utf8');
+      return JSON.parse(data);
+    }
+    return [];
+  } catch (error) {
+    console.error('Error loading playlists:', error);
+    return [];
+  }
+});
+
+ipcMain.handle('save-playlists', async (event, playlists) => {
+  try {
+    fs.writeFileSync(playlistsFilePath, JSON.stringify(playlists, null, 2), 'utf8');
+    return true;
+  } catch (error) {
+    console.error('Error saving playlists:', error);
+    return false;
+  }
+});
 
 app.whenReady().then(createWindow);

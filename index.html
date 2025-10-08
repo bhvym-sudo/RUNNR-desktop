@@ -23,8 +23,14 @@
 
     <div class="main-layout">
       <aside class="sidebar">
-        <h2>Liked Songs</h2>
-        <ul id="likedSongsList"></ul>
+        <div class="sidebar-header">
+          <h2>Library</h2>
+          <button id="createPlaylistBtn" class="create-playlist-btn">+</button>
+        </div>
+        <div class="playlists-container">
+          <h3>Playlists</h3>
+          <ul id="playlistsContainer"></ul>
+        </div>
       </aside>
 
       <main class="main-content" id="mainContent">
@@ -62,13 +68,16 @@
         </div>
       </div>
 
-      <div class="placeholder-right"></div>
+      <div class="placeholder-right">
+        <button id="addToPlaylistBtn" class="add-to-playlist-btn">+</button>
+      </div>
     </footer>
 
 
 
 
     <script src="renderer.js"></script>
+    <script src="js/playlist.js"></script>
   </div>
 </body>
 </html>

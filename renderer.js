@@ -9,6 +9,7 @@ const currentTitle = document.getElementById('currentTitle');
 const currentSubtitle = document.getElementById('currentSubtitle');
 const currentTimeDisplay = document.getElementById('currentTime');
 const totalDurationDisplay = document.getElementById('totalDuration');
+const addToPlaylistBtn = document.getElementById('addToPlaylistBtn');
 
 let audio = new Audio();
 let isPlaying = false;
@@ -84,12 +85,19 @@ function renderSearchResults(songs) {
         <div class="song-subtitle">${subtitle}</div>
       </div>
       <div style="font-size: 12px; color: #ccc;">${formatDuration(duration)}</div>
+      <button class="song-actions-btn">⋮</button>
     `;
 
     const playButton = card.querySelector('.play-button');
     playButton.addEventListener('click', (e) => {
       e.stopPropagation();
       playSong(encryptedUrl, { title, subtitle, image, duration }, card);
+    });
+
+    const actionsButton = card.querySelector('.song-actions-btn');
+    actionsButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showAddToPlaylistMenu({ title, subtitle, image, duration, encryptedUrl }, actionsButton);
     });
 
     card.addEventListener('click', () => {
@@ -205,9 +213,16 @@ function formatDuration(seconds) {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
+addToPlaylistBtn.addEventListener('click', () => {
+  if (!currentSong) return;
+  showAddToPlaylistMenu(currentSong, addToPlaylistBtn);
+});
+
 homeBtn?.addEventListener('click', () => {
   dashboard.style.display = 'block';
   const searchResults = document.getElementById('searchResults');
   if (searchResults) searchResults.remove();
+  const playlistView = document.getElementById('playlistView');
+  if (playlistView) playlistView.remove();
   searchInput.value = '';
 });

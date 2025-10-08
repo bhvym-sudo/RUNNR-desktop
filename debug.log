@@ -1,0 +1,2 @@
+[3116:15480:1008/185924.575:INFO:electron_main_delegate.cc(501)] #### AhaElectron (relauncher)  Startup #### cmd:  --no-sandbox
+[3116:15480:1008/185925.283:INFO:electron_main_delegate.cc(269)] #### AhaElectron (relauncher)  Shutdown ####
