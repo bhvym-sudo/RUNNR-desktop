@@ -7,7 +7,7 @@ A modern, feature-rich desktop music streaming application built with Electron.j
 ## Features
 
 ###  Core Functionality
-- **Music Search**: Search and play thousands of songs from JioSaavn
+- **Music Search**: Search and play thousands of songs.
 - **Playlist Management**: Create, organize, and manage custom playlists
 - **Now Playing Sidebar**: Beautiful sidebar displaying current track information
 - **Full-Screen Mode**: Immersive full-screen view with dynamic background colors
