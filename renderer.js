@@ -311,7 +311,7 @@ repeatBtn.classList.add('active');
 repeatBtn.textContent = '⟲';
 } else {
 repeatBtn.classList.add('active');
-repeatBtn.textContent = '🔂';
+repeatBtn.textContent = '↳ ↰';
 }
 });
 
