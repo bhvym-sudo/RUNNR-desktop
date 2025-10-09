@@ -14,6 +14,9 @@ const currentSubtitle = document.getElementById('currentSubtitle');
 const currentTimeDisplay = document.getElementById('currentTime');
 const totalDurationDisplay = document.getElementById('totalDuration');
 const addToPlaylistBtn = document.getElementById('addToPlaylistBtn');
+const rightSidebarImg = document.getElementById('rightSidebarImg');
+const rightSidebarTitle = document.getElementById('rightSidebarTitle');
+const rightSidebarSubtitle = document.getElementById('rightSidebarSubtitle');
 
 let audio = new Audio();
 let isPlaying = false;
@@ -32,6 +35,78 @@ const defaultHeaders = {
 "Origin": "https://www.jiosaavn.com",
 "Accept": "application/json"
 };
+
+const fs = require('fs');
+const path = require('path');
+
+function showWelcomeSlides() {
+const slidesPath = path.join(__dirname, 'slides.json');
+if (!fs.existsSync(slidesPath)) return;
+const slidesData = JSON.parse(fs.readFileSync(slidesPath, 'utf8'));
+let currentSlide = 0;
+const backdrop = document.createElement('div');
+backdrop.className = 'dialog-backdrop';
+const dialog = document.createElement('div');
+dialog.className = 'welcome-dialog';
+function renderSlide() {
+const slide = slidesData[currentSlide];
+dialog.innerHTML = `
+<div class="slide active">
+<div class="slide-emoji">${slide.emoji}</div>
+<div class="slide-title">${slide.title}</div>
+<div class="slide-description">${slide.description}</div>
+</div>
+<div class="slide-controls">
+<div class="slide-dots">
+${slidesData.map((_, i) => `<div class="dot ${i === currentSlide ? 'active' : ''}"></div>`).join('')}
+</div>
+<div>
+${currentSlide < slidesData.length - 1 ? 
+`<button class="slide-nav-btn skip">Skip</button>
+<button class="slide-nav-btn next">Next</button>` :
+`<button class="slide-nav-btn finish">Get Started</button>`}
+</div>
+</div>
+`;
+const dots = dialog.querySelectorAll('.dot');
+dots.forEach((dot, i) => {
+dot.addEventListener('click', () => {
+currentSlide = i;
+renderSlide();
+});
+});
+const nextBtn = dialog.querySelector('.next');
+if (nextBtn) {
+nextBtn.addEventListener('click', () => {
+if (currentSlide < slidesData.length - 1) {
+currentSlide++;
+renderSlide();
+}
+});
+}
+const skipBtn = dialog.querySelector('.skip');
+if (skipBtn) {
+skipBtn.addEventListener('click', () => {
+backdrop.remove();
+dialog.remove();
+});
+}
+const finishBtn = dialog.querySelector('.finish');
+if (finishBtn) {
+finishBtn.addEventListener('click', () => {
+backdrop.remove();
+dialog.remove();
+});
+}
+}
+renderSlide();
+document.getElementById('welcomeSlidesContainer').appendChild(backdrop);
+document.getElementById('welcomeSlidesContainer').appendChild(dialog);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+showWelcomeSlides();
+});
 
 searchInput.addEventListener('input', async () => {
 const query = searchInput.value.trim();
@@ -120,6 +195,9 @@ currentPlayingCard = cardElement;
 currentImg.src = song.image.replace('150x150', '500x500');
 currentTitle.textContent = song.title;
 currentSubtitle.textContent = song.subtitle;
+rightSidebarImg.src = song.image.replace('150x150', '500x500');
+rightSidebarTitle.textContent = song.title;
+rightSidebarSubtitle.textContent = song.subtitle;
 try {
 const response = await fetch(
 `https://www.jiosaavn.com/api.php?__call=song.generateAuthToken&url=${encodeURIComponent(song.encryptedUrl)}&bitrate=320&_format=json&ctx=web6dot0&_marker=0`,
@@ -233,7 +311,7 @@ repeatBtn.classList.add('active');
 repeatBtn.textContent = '⟲';
 } else {
 repeatBtn.classList.add('active');
-repeatBtn.textContent = '↳ ↰';
+repeatBtn.textContent = '🔂';
 }
 });
 

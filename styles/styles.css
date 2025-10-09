@@ -214,8 +214,63 @@ padding: 20px;
 overflow-y: auto;
 }
 
+.right-sidebar {
+width: 350px;
+background-color: var(--eerie-black);
+padding: 20px;
+overflow-y: auto;
+border-left: 1px solid var(--border);
+display: flex;
+flex-direction: column;
+}
+
+.now-playing-large {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 20px;
+}
+
+.now-playing-image-container {
+width: 100%;
+padding-top: 100%;
+position: relative;
+border-radius: 12px;
+overflow: hidden;
+background-color: var(--davys-gray);
+}
+
+.now-playing-image-container img {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.now-playing-info {
+text-align: center;
+width: 100%;
+}
+
+#rightSidebarTitle {
+font-size: 20px;
+font-weight: bold;
+color: var(--white-bright);
+margin-bottom: 8px;
+word-wrap: break-word;
+}
+
+#rightSidebarSubtitle {
+font-size: 14px;
+color: var(--muted);
+word-wrap: break-word;
+}
+
 .dashboard {
 padding: 20px 0;
+position: relative;
 }
 
 .dashboard h3 {
@@ -623,6 +678,145 @@ color: var(--red) !important;
 background-color: rgba(247, 118, 142, 0.2) !important;
 }
 
+.welcome-dialog {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: linear-gradient(135deg, var(--davys-gray) 0%, var(--eerie-black) 100%);
+border-radius: 16px;
+padding: 40px;
+width: 450px;
+max-width: 90vw;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+z-index: 2000;
+animation: fadeIn 0.3s ease-in;
+}
+
+.dialog-backdrop {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.85);
+z-index: 1999;
+animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+from {
+opacity: 0;
+}
+to {
+opacity: 1;
+}
+}
+
+.slide {
+display: none;
+animation: slideIn 0.5s ease-out;
+text-align: center;
+}
+
+.slide.active {
+display: block;
+}
+
+@keyframes slideIn {
+from {
+opacity: 0;
+transform: translateX(30px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+.slide-emoji {
+font-size: 80px;
+margin-bottom: 20px;
+animation: bounce 1s ease-in-out;
+}
+
+@keyframes bounce {
+0%, 100% {
+transform: translateY(0);
+}
+50% {
+transform: translateY(-10px);
+}
+}
+
+.slide-title {
+font-size: 28px;
+font-weight: bold;
+color: var(--white-bright);
+margin-bottom: 15px;
+}
+
+.slide-description {
+font-size: 16px;
+color: var(--muted);
+line-height: 1.6;
+margin-bottom: 30px;
+}
+
+.slide-controls {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 30px;
+}
+
+.slide-dots {
+display: flex;
+gap: 8px;
+}
+
+.dot {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background-color: var(--muted-dark);
+transition: all 0.3s;
+cursor: pointer;
+}
+
+.dot.active {
+background-color: var(--accent);
+width: 24px;
+border-radius: 4px;
+}
+
+.slide-nav-btn {
+padding: 10px 24px;
+border: none;
+border-radius: 8px;
+background-color: var(--accent);
+color: white;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s;
+font-size: 14px;
+}
+
+.slide-nav-btn:hover {
+background-color: var(--accent-hover);
+transform: scale(1.05);
+}
+
+.slide-nav-btn.skip {
+background-color: transparent;
+color: var(--muted);
+}
+
+.slide-nav-btn.skip:hover {
+background-color: var(--white_20);
+color: var(--white);
+}
+
 ::-webkit-scrollbar {
 width: 12px;
 height: 12px;
@@ -653,23 +847,27 @@ scrollbar-color: var(--davys-gray) var(--eerie-black);
 }
 
 .sidebar::-webkit-scrollbar,
-.main-content::-webkit-scrollbar {
+.main-content::-webkit-scrollbar,
+.right-sidebar::-webkit-scrollbar {
 width: 8px;
 }
 
 .sidebar::-webkit-scrollbar-track,
-.main-content::-webkit-scrollbar-track {
+.main-content::-webkit-scrollbar-track,
+.right-sidebar::-webkit-scrollbar-track {
 background: var(--eerie-black);
 border-radius: 0;
 }
 
 .sidebar::-webkit-scrollbar-thumb,
-.main-content::-webkit-scrollbar-thumb {
+.main-content::-webkit-scrollbar-thumb,
+.right-sidebar::-webkit-scrollbar-thumb {
 background: var(--davys-gray);
 border-radius: 0;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover,
-.main-content::-webkit-scrollbar-thumb:hover {
+.main-content::-webkit-scrollbar-thumb:hover,
+.right-sidebar::-webkit-scrollbar-thumb:hover {
 background: var(--accent-hover);
 }
