@@ -17,6 +17,12 @@ const addToPlaylistBtn = document.getElementById('addToPlaylistBtn');
 const rightSidebarImg = document.getElementById('rightSidebarImg');
 const rightSidebarTitle = document.getElementById('rightSidebarTitle');
 const rightSidebarSubtitle = document.getElementById('rightSidebarSubtitle');
+const fullscreenToggleBtn = document.getElementById('fullscreenToggleBtn');
+const fullscreenView = document.getElementById('fullscreenView');
+const fullscreenCloseBtn = document.getElementById('fullscreenCloseBtn');
+const fullscreenImg = document.getElementById('fullscreenImg');
+const fullscreenTitle = document.getElementById('fullscreenTitle');
+const fullscreenSubtitle = document.getElementById('fullscreenSubtitle');
 
 let audio = new Audio();
 let isPlaying = false;
@@ -108,6 +114,46 @@ window.addEventListener('DOMContentLoaded', () => {
 showWelcomeSlides();
 });
 
+fullscreenToggleBtn.addEventListener('click', () => {
+if (currentSong) {
+fullscreenImg.src = currentSong.image.replace('150x150', '500x500');
+fullscreenTitle.textContent = currentSong.title;
+fullscreenSubtitle.textContent = currentSong.subtitle;
+fullscreenView.classList.add('active');
+extractDominantColor(currentSong.image.replace('150x150', '500x500'));
+}
+});
+
+fullscreenCloseBtn.addEventListener('click', () => {
+fullscreenView.classList.remove('active');
+fullscreenView.style.background = '';
+});
+
+function extractDominantColor(imageUrl) {
+const img = new Image();
+img.crossOrigin = 'Anonymous';
+img.src = imageUrl;
+img.onload = function() {
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = img.width;
+canvas.height = img.height;
+ctx.drawImage(img, 0, 0);
+const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+const data = imageData.data;
+let r = 0, g = 0, b = 0;
+for (let i = 0; i < data.length; i += 4) {
+r += data[i];
+g += data[i + 1];
+b += data[i + 2];
+}
+r = Math.floor(r / (data.length / 4));
+g = Math.floor(g / (data.length / 4));
+b = Math.floor(b / (data.length / 4));
+fullscreenView.style.background = `rgb(${r}, ${g}, ${b})`;
+};
+}
+
 searchInput.addEventListener('input', async () => {
 const query = searchInput.value.trim();
 if (query.length === 0) {
@@ -115,6 +161,10 @@ dashboard.style.display = 'block';
 const oldResults = document.getElementById('searchResults');
 if (oldResults) oldResults.remove();
 return;
+}
+if (fullscreenView.classList.contains('active')) {
+fullscreenView.classList.remove('active');
+fullscreenView.style.background = '';
 }
 try {
 const response = await fetch(
@@ -282,6 +332,10 @@ const oldResults = document.getElementById('searchResults');
 if (oldResults) oldResults.remove();
 const playlistView = document.getElementById('playlistView');
 if (playlistView) playlistView.remove();
+if (fullscreenView.classList.contains('active')) {
+fullscreenView.classList.remove('active');
+fullscreenView.style.background = '';
+}
 });
 
 addToPlaylistBtn.addEventListener('click', (e) => {

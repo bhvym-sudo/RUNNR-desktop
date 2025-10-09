@@ -55,6 +55,8 @@ padding: 10px 20px;
 background-color: var(--night);
 border-bottom: 1px solid var(--border);
 gap: 20px;
+z-index: 100;
+position: relative;
 }
 
 .logo {
@@ -131,6 +133,91 @@ color: var(--muted);
 display: flex;
 flex: 1;
 overflow: hidden;
+position: relative;
+}
+
+.fullscreen-view {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 50;
+display: none;
+align-items: center;
+justify-content: center;
+}
+
+.fullscreen-view.active {
+display: flex;
+}
+
+.fullscreen-close-btn {
+position: absolute;
+top: 20px;
+right: 20px;
+background-color: rgba(0, 0, 0, 0.6);
+border: none;
+color: var(--white);
+width: 44px;
+height: 44px;
+border-radius: 50%;
+cursor: pointer;
+z-index: 60;
+font-size: 22px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background-color 0.3s, transform 0.3s;
+}
+
+.fullscreen-close-btn:hover {
+background-color: rgba(0, 0, 0, 0.8);
+transform: scale(1.1);
+}
+
+.fullscreen-content {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 40px;
+max-width: 600px;
+width: 90%;
+}
+
+.fullscreen-image-container {
+width: 100%;
+max-width: 500px;
+position: relative;
+border-radius: 16px;
+overflow: hidden;
+box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+aspect-ratio: 1 / 1;
+}
+
+.fullscreen-image-container img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.fullscreen-info {
+text-align: center;
+}
+
+#fullscreenTitle {
+font-size: 42px;
+font-weight: bold;
+color: var(--white-bright);
+margin-bottom: 16px;
+word-wrap: break-word;
+}
+
+#fullscreenSubtitle {
+font-size: 22px;
+color: var(--muted);
+word-wrap: break-word;
 }
 
 .sidebar {
@@ -247,6 +334,34 @@ left: 0;
 width: 100%;
 height: 100%;
 object-fit: cover;
+}
+
+.fullscreen-toggle-btn {
+position: absolute;
+top: 12px;
+right: 12px;
+background-color: rgba(0, 0, 0, 0.6);
+border: none;
+color: var(--white);
+width: 36px;
+height: 36px;
+border-radius: 50%;
+cursor: pointer;
+z-index: 10;
+font-size: 18px;
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+transition: opacity 0.3s, background-color 0.3s;
+}
+
+.now-playing-image-container:hover .fullscreen-toggle-btn {
+opacity: 1;
+}
+
+.fullscreen-toggle-btn:hover {
+background-color: rgba(0, 0, 0, 0.8);
 }
 
 .now-playing-info {
@@ -417,6 +532,8 @@ align-items: center;
 padding: 15px 20px;
 background-color: var(--night);
 border-top: 1px solid var(--border);
+z-index: 100;
+position: relative;
 }
 
 .now-playing {

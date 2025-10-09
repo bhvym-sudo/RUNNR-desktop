@@ -11,10 +11,20 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "devDependencies": {
-    "electron": "^37.2.4"
+  "build": {
+    "appId": "com.runnr.desktop",
+    "productName": "RUNNR",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.png"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/**/*"
+    ]
   },
-  "dependencies": {
-
+  "devDependencies": {
+    "electron": "^37.2.4",
+    "electron-builder": "^24.13.3"
   }
 }

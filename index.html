@@ -19,7 +19,19 @@
 </div>
 <div></div>
 </header>
-<div class="main-layout">
+<div class="main-layout" id="mainLayout">
+<div class="fullscreen-view" id="fullscreenView">
+<button class="fullscreen-close-btn" id="fullscreenCloseBtn">⛶</button>
+<div class="fullscreen-content">
+<div class="fullscreen-image-container">
+<img id="fullscreenImg" src="assets/no.png" alt="">
+</div>
+<div class="fullscreen-info">
+<div id="fullscreenTitle"></div>
+<div id="fullscreenSubtitle"></div>
+</div>
+</div>
+</div>
 <aside class="sidebar">
 <div class="sidebar-header">
 <h2>Playlists</h2>
@@ -48,7 +60,8 @@
 <aside class="right-sidebar" id="rightSidebar">
 <div class="now-playing-large">
 <div class="now-playing-image-container">
-<img id="rightSidebarImg" src="" alt="No song playing">
+<button class="fullscreen-toggle-btn" id="fullscreenToggleBtn">⛶</button>
+<img id="rightSidebarImg" src="assets/no.png" alt="No song playing">
 </div>
 <div class="now-playing-info">
 <div id="rightSidebarTitle">No song playing</div>
@@ -59,7 +72,7 @@
 </div>
 <div class="player-bar">
 <div class="now-playing">
-<img id="currentImg" src="" alt="">
+<img id="currentImg" src="assets/no.png" alt="">
 <div>
 <div id="currentTitle">No song playing</div>
 <div id="currentSubtitle"></div>
