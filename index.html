@@ -1,83 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>RUNNR Desktop</title>
-  <link rel="stylesheet" href="styles/styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RUNNR</title>
+<link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-  <div class="app-container">
-    <div class="top-bar">
-      <div class="logo">
-      <img src="assets/icon.png" alt="Logo">
-      RUNNR
-    </div>
-      <div class="search-bar-container">
-        <button id="homeBtn" class="home-btn">
-          <img src="assets/ic_home.png" alt="Home">
-        </button>
-
-        <input type="text" id="searchInput" placeholder="Run your jam." />
-      </div>
-    </div>
-
-    <div class="main-layout">
-      <aside class="sidebar">
-        <div class="sidebar-header">
-          <h2>Library</h2>
-          <button id="createPlaylistBtn" class="create-playlist-btn">+</button>
-        </div>
-        <div class="playlists-container">
-          <h3>Playlists</h3>
-          <ul id="playlistsContainer"></ul>
-        </div>
-      </aside>
-
-      <main class="main-content" id="mainContent">
-        <section class="dashboard" id="dashboard">
-          <h3>What's New</h3>
-          <div class="stats">
-            <div class="stat">🎧 Most Played: <span id="mostPlayed">---</span></div>
-            <div class="stat">⏱️ Time Listened: <span id="timeListened">0 mins</span></div>
-            <div class="stat">💖 Liked Songs: <span id="likedCount">0</span></div>
-            <div class="stat">▶ Last Played: <span id="lastPlayed">---</span></div>
-          </div>
-        </section>
-      </main>
-    </div>
-
-    <footer class="player-bar">
-      <div class="now-playing">
-        <img id="currentImg" src="" alt="Album Art" />
-        <div>
-          <div id="currentTitle">No song playing</div>
-          <div id="currentSubtitle">---</div>
-        </div>
-      </div>
-
-      <div class="center-controls">
-        <div class="controls">
-          <button id="prevBtn">⏮</button>
-          <button id="playPauseBtn">▶</button>
-          <button id="nextBtn">⏭</button>
-        </div>
-        <div class="seek-container">
-          <span id="currentTime">0:00</span>
-          <input type="range" id="seekBar" value="0" min="0" max="100">
-          <span id="totalDuration">0:00</span>
-        </div>
-      </div>
-
-      <div class="placeholder-right">
-        <button id="addToPlaylistBtn" class="add-to-playlist-btn">+</button>
-      </div>
-    </footer>
-
-
-
-
-    <script src="renderer.js"></script>
-    <script src="js/playlist.js"></script>
-  </div>
+<div class="app-container">
+<header class="top-bar">
+<div class="logo">
+<img src="assets/icon.png" alt="Logo">
+<span>RUNNR</span>
+</div>
+<div class="search-bar-container">
+<button class="home-btn" id="homeBtn">🏠︎</button>
+<input type="text" id="searchInput" placeholder="Search for songs...">
+</div>
+<div></div>
+</header>
+<div class="main-layout">
+<aside class="sidebar">
+<div class="sidebar-header">
+<h2>Playlists</h2>
+<button class="create-playlist-btn" id="createPlaylistBtn">+</button>
+</div>
+<div class="playlists-container">
+<ul id="playlistsContainer"></ul>
+</div>
+</aside>
+<main class="main-content" id="mainContent">
+<section class="dashboard" id="dashboard">
+<h3>Welcome to RUNNR</h3>
+<div class="stats">
+<div class="stat">
+<h4>Search for Songs</h4>
+<p>Use the search bar above to find your favorite tracks</p>
+</div>
+<div class="stat">
+<h4>Create Playlists</h4>
+<p>Organize your music into custom playlists</p>
+</div>
+</div>
+</section>
+</main>
+</div>
+<div class="player-bar">
+<div class="now-playing">
+<img id="currentImg" src="" alt="">
+<div>
+<div id="currentTitle">No song playing</div>
+<div id="currentSubtitle"></div>
+</div>
+</div>
+<div class="center-controls">
+<div class="controls">
+<button id="shuffleBtn">⇄</button>
+<button id="prevBtn">⏮</button>
+<button id="playPauseBtn"></button>
+<button id="nextBtn">⏭</button>
+<button id="repeatBtn">⟲</button>
+</div>
+<div class="seek-container">
+<span id="currentTime">0:00</span>
+<input type="range" id="seekBar" min="0" max="100" value="0">
+<span id="totalDuration">0:00</span>
+</div>
+</div>
+<div class="placeholder-right">
+<button class="add-to-playlist-btn" id="addToPlaylistBtn">၊၊||၊</button>
+</div>
+</div>
+</div>
+<script src="renderer.js"></script>
+<script src="js/playlist.js"></script>
 </body>
 </html>
