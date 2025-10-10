@@ -129,6 +129,15 @@ fullscreenView.classList.remove('active');
 fullscreenView.style.background = '';
 });
 
+function updateFullscreenView() {
+if (fullscreenView.classList.contains('active') && currentSong) {
+fullscreenImg.src = currentSong.image.replace('150x150', '500x500');
+fullscreenTitle.textContent = currentSong.title;
+fullscreenSubtitle.textContent = currentSong.subtitle;
+extractDominantColor(currentSong.image.replace('150x150', '500x500'));
+}
+}
+
 function extractDominantColor(imageUrl) {
 const img = new Image();
 img.crossOrigin = 'Anonymous';
@@ -248,6 +257,7 @@ currentSubtitle.textContent = song.subtitle;
 rightSidebarImg.src = song.image.replace('150x150', '500x500');
 rightSidebarTitle.textContent = song.title;
 rightSidebarSubtitle.textContent = song.subtitle;
+updateFullscreenView();
 try {
 const response = await fetch(
 `https://www.jiosaavn.com/api.php?__call=song.generateAuthToken&url=${encodeURIComponent(song.encryptedUrl)}&bitrate=320&_format=json&ctx=web6dot0&_marker=0`,
